@@ -18,7 +18,7 @@ Contact mail : 93245ahmad@gmail.com
 
 ### content in this repository
 
-> c++ code
-> python code
-> pandas code
+> c++ code \
+> python code\
+> pandas code\
 > more of the data science tricks and works
