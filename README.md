@@ -22,3 +22,8 @@ Contact mail : 93245ahmad@gmail.com
 > python code\
 > pandas code\
 > more of the data science tricks and works
+
+```python
+ print("writen by Ahmad")
+```
+## Ahmad
