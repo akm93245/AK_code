@@ -1,0 +1,511 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>NN explained by gpt.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>This code is a Python program for training and evaluating a simple image classification model using TensorFlow and Keras. Here's a breakdown of what each part does:</p>
+<hr>
+<h3 id="index-and-visualization"><strong>Index and Visualization</strong></h3>
+<pre class="hljs"><code><div>index = <span class="hljs-number">9000</span>
+
+<span class="hljs-comment"># set number of character per row when printing</span>
+np.set_printoptions(linewidth=<span class="hljs-number">320</span>)
+
+<span class="hljs-comment"># print the label and the image</span>
+print(<span class="hljs-string">f"label : <span class="hljs-subst">{train_labels[index]}</span>"</span>)
+print(<span class="hljs-string">f"\nIMG PIXEL ARRAY :\n <span class="hljs-subst">{train_img[index]}</span>"</span>)
+
+<span class="hljs-comment"># visualize the image</span>
+plt.imshow(train_img[index])
+</div></code></pre>
+<ol>
+<li>
+<p><strong>Index and Data Inspection</strong>:</p>
+<ul>
+<li>The variable <code>index</code> points to the 9000th image and label in the dataset (<code>train_img</code> and <code>train_labels</code>).</li>
+<li>The <code>np.set_printoptions(linewidth=320)</code> ensures that when printing arrays, long lines are not wrapped into multiple rows.</li>
+</ul>
+</li>
+<li>
+<p><strong>Visualization</strong>:</p>
+<ul>
+<li>The <code>print</code> statements output the label and pixel values of the image at index 9000.</li>
+<li><code>plt.imshow()</code> visualizes the image using Matplotlib.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="normalization"><strong>Normalization</strong></h3>
+<pre class="hljs"><code><div>train_img = train_img / <span class="hljs-number">255.0</span>
+test_img = test_img / <span class="hljs-number">255.0</span>
+</div></code></pre>
+<ol start="3">
+<li><strong>Normalization</strong>:
+<ul>
+<li>Dividing pixel values by 255 scales them to a range of [0, 1], which helps the neural network converge faster during training. This is a common preprocessing step.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="model-building"><strong>Model Building</strong></h3>
+<pre class="hljs"><code><div>model = tf.keras.models.Sequential([
+    keras.layers.Flatten(),
+    keras.layers.Dense(<span class="hljs-number">128</span>, activation=<span class="hljs-string">'relu'</span>),
+    keras.layers.Dense(<span class="hljs-number">10</span>, activation=<span class="hljs-string">'softmax'</span>)
+])
+</div></code></pre>
+<ol start="4">
+<li><strong>Defining the Neural Network</strong>:
+<ul>
+<li><strong>Sequential Model</strong>: A stack of layers where each layer’s output is the next layer's input.</li>
+<li><strong>Flatten Layer</strong>: Converts a 2D image (e.g., 28x28 pixels) into a 1D array to feed into the Dense layers.</li>
+<li><strong>Dense Layer (Hidden Layer)</strong>:
+<ul>
+<li>Contains 128 neurons with the ReLU activation function.</li>
+<li>ReLU (Rectified Linear Unit): Introduces non-linearity and helps the model learn complex patterns.</li>
+</ul>
+</li>
+<li><strong>Dense Layer (Output Layer)</strong>:
+<ul>
+<li>Contains 10 neurons (one for each class) with the Softmax activation function. This outputs probabilities for each class.</li>
+</ul>
+</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="softmax-activation-function"><strong>Softmax Activation Function</strong></h3>
+<pre class="hljs"><code><div>inputs = np.array([[<span class="hljs-number">-1.0</span>, <span class="hljs-number">0.0</span>, <span class="hljs-number">1.0</span>, <span class="hljs-number">2.0</span>, <span class="hljs-number">3.0</span>, <span class="hljs-number">4.0</span>]])
+inputs = tf.convert_to_tensor(inputs)
+print(<span class="hljs-string">f'input to softmax function <span class="hljs-subst">{inputs.numpy()}</span>'</span>)
+
+outputs = tf.keras.activations.softmax(inputs)
+print(<span class="hljs-string">f'output of softmax function : <span class="hljs-subst">{outputs.numpy()}</span>'</span>)
+
+sum = tf.reduce_sum(outputs)
+print(<span class="hljs-string">f'sum of outputs : <span class="hljs-subst">{sum}</span>'</span>)
+
+prediction = np.argmax(outputs)
+print(<span class="hljs-string">f'class with highest probability : <span class="hljs-subst">{prediction}</span>'</span>)
+</div></code></pre>
+<ol start="5">
+<li><strong>Softmax Example</strong>:
+<ul>
+<li>A tensor <code>inputs</code> is created containing some sample values.</li>
+<li>The <strong>Softmax function</strong> converts these values into probabilities, ensuring they sum to 1.</li>
+<li>The <strong>highest probability index</strong> is determined using <code>np.argmax</code>.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="compiling-the-model"><strong>Compiling the Model</strong></h3>
+<pre class="hljs"><code><div>model.compile(optimizer=<span class="hljs-string">'adam'</span>,
+              loss=<span class="hljs-string">'sparse_categorical_crossentropy'</span>,
+              metrics=[<span class="hljs-string">'accuracy'</span>])
+</div></code></pre>
+<ol start="6">
+<li><strong>Compilation</strong>:
+<ul>
+<li><strong>Optimizer</strong>: Adam optimizer adjusts weights to minimize the loss.</li>
+<li><strong>Loss Function</strong>: <code>sparse_categorical_crossentropy</code> is used because the labels are integers (not one-hot encoded).</li>
+<li><strong>Metric</strong>: Accuracy is used to evaluate the model's performance during training and testing.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="training-the-model"><strong>Training the Model</strong></h3>
+<pre class="hljs"><code><div>model.fit(train_img, train_labels, epochs=<span class="hljs-number">5</span>)
+</div></code></pre>
+<ol start="7">
+<li><strong>Training</strong>:
+<ul>
+<li>The model is trained on the training images (<code>train_img</code>) and their labels (<code>train_labels</code>) for 5 epochs.</li>
+<li>Each epoch involves a forward pass (prediction) and a backward pass (updating weights).</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="evaluation"><strong>Evaluation</strong></h3>
+<pre class="hljs"><code><div>model.evaluate(test_img, test_labels)
+</div></code></pre>
+<ol start="8">
+<li><strong>Testing</strong>:
+<ul>
+<li>The model's performance is evaluated on a separate test dataset (<code>test_img</code> and <code>test_labels</code>).</li>
+<li>The evaluation prints the loss and accuracy metrics for the test set.</li>
+</ul>
+</li>
+</ol>
+<hr>
+<h3 id="what-this-does-overall"><strong>What This Does Overall</strong></h3>
+<ul>
+<li>Visualizes and pre-processes image data.</li>
+<li>Defines and trains a simple neural network for image classification.</li>
+<li>Tests the model's performance on unseen data.</li>
+<li>Demonstrates how softmax works to calculate probabilities.</li>
+</ul>
+
+</body>
+</html>
