@@ -1,0 +1,487 @@
+<!DOCTYPE html>
+<html>
+<head>
+<title>streamlit_cmds.md</title>
+<meta http-equiv="Content-type" content="text/html;charset=UTF-8">
+
+<style>
+/* https://github.com/microsoft/vscode/blob/master/extensions/markdown-language-features/media/markdown.css */
+/*---------------------------------------------------------------------------------------------
+ *  Copyright (c) Microsoft Corporation. All rights reserved.
+ *  Licensed under the MIT License. See License.txt in the project root for license information.
+ *--------------------------------------------------------------------------------------------*/
+
+body {
+	font-family: var(--vscode-markdown-font-family, -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif);
+	font-size: var(--vscode-markdown-font-size, 14px);
+	padding: 0 26px;
+	line-height: var(--vscode-markdown-line-height, 22px);
+	word-wrap: break-word;
+}
+
+#code-csp-warning {
+	position: fixed;
+	top: 0;
+	right: 0;
+	color: white;
+	margin: 16px;
+	text-align: center;
+	font-size: 12px;
+	font-family: sans-serif;
+	background-color:#444444;
+	cursor: pointer;
+	padding: 6px;
+	box-shadow: 1px 1px 1px rgba(0,0,0,.25);
+}
+
+#code-csp-warning:hover {
+	text-decoration: none;
+	background-color:#007acc;
+	box-shadow: 2px 2px 2px rgba(0,0,0,.25);
+}
+
+body.scrollBeyondLastLine {
+	margin-bottom: calc(100vh - 22px);
+}
+
+body.showEditorSelection .code-line {
+	position: relative;
+}
+
+body.showEditorSelection .code-active-line:before,
+body.showEditorSelection .code-line:hover:before {
+	content: "";
+	display: block;
+	position: absolute;
+	top: 0;
+	left: -12px;
+	height: 100%;
+}
+
+body.showEditorSelection li.code-active-line:before,
+body.showEditorSelection li.code-line:hover:before {
+	left: -30px;
+}
+
+.vscode-light.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.15);
+}
+
+.vscode-light.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(0, 0, 0, 0.40);
+}
+
+.vscode-light.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-dark.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.4);
+}
+
+.vscode-dark.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 255, 255, 0.60);
+}
+
+.vscode-dark.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+.vscode-high-contrast.showEditorSelection .code-active-line:before {
+	border-left: 3px solid rgba(255, 160, 0, 0.7);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line:hover:before {
+	border-left: 3px solid rgba(255, 160, 0, 1);
+}
+
+.vscode-high-contrast.showEditorSelection .code-line .code-line:hover:before {
+	border-left: none;
+}
+
+img {
+	max-width: 100%;
+	max-height: 100%;
+}
+
+a {
+	text-decoration: none;
+}
+
+a:hover {
+	text-decoration: underline;
+}
+
+a:focus,
+input:focus,
+select:focus,
+textarea:focus {
+	outline: 1px solid -webkit-focus-ring-color;
+	outline-offset: -1px;
+}
+
+hr {
+	border: 0;
+	height: 2px;
+	border-bottom: 2px solid;
+}
+
+h1 {
+	padding-bottom: 0.3em;
+	line-height: 1.2;
+	border-bottom-width: 1px;
+	border-bottom-style: solid;
+}
+
+h1, h2, h3 {
+	font-weight: normal;
+}
+
+table {
+	border-collapse: collapse;
+}
+
+table > thead > tr > th {
+	text-align: left;
+	border-bottom: 1px solid;
+}
+
+table > thead > tr > th,
+table > thead > tr > td,
+table > tbody > tr > th,
+table > tbody > tr > td {
+	padding: 5px 10px;
+}
+
+table > tbody > tr + tr > td {
+	border-top: 1px solid;
+}
+
+blockquote {
+	margin: 0 7px 0 5px;
+	padding: 0 16px 0 10px;
+	border-left-width: 5px;
+	border-left-style: solid;
+}
+
+code {
+	font-family: Menlo, Monaco, Consolas, "Droid Sans Mono", "Courier New", monospace, "Droid Sans Fallback";
+	font-size: 1em;
+	line-height: 1.357em;
+}
+
+body.wordWrap pre {
+	white-space: pre-wrap;
+}
+
+pre:not(.hljs),
+pre.hljs code > div {
+	padding: 16px;
+	border-radius: 3px;
+	overflow: auto;
+}
+
+pre code {
+	color: var(--vscode-editor-foreground);
+	tab-size: 4;
+}
+
+/** Theming */
+
+.vscode-light pre {
+	background-color: rgba(220, 220, 220, 0.4);
+}
+
+.vscode-dark pre {
+	background-color: rgba(10, 10, 10, 0.4);
+}
+
+.vscode-high-contrast pre {
+	background-color: rgb(0, 0, 0);
+}
+
+.vscode-high-contrast h1 {
+	border-color: rgb(0, 0, 0);
+}
+
+.vscode-light table > thead > tr > th {
+	border-color: rgba(0, 0, 0, 0.69);
+}
+
+.vscode-dark table > thead > tr > th {
+	border-color: rgba(255, 255, 255, 0.69);
+}
+
+.vscode-light h1,
+.vscode-light hr,
+.vscode-light table > tbody > tr + tr > td {
+	border-color: rgba(0, 0, 0, 0.18);
+}
+
+.vscode-dark h1,
+.vscode-dark hr,
+.vscode-dark table > tbody > tr + tr > td {
+	border-color: rgba(255, 255, 255, 0.18);
+}
+
+</style>
+
+<style>
+/* Tomorrow Theme */
+/* http://jmblog.github.com/color-themes-for-google-code-highlightjs */
+/* Original theme - https://github.com/chriskempson/tomorrow-theme */
+
+/* Tomorrow Comment */
+.hljs-comment,
+.hljs-quote {
+	color: #8e908c;
+}
+
+/* Tomorrow Red */
+.hljs-variable,
+.hljs-template-variable,
+.hljs-tag,
+.hljs-name,
+.hljs-selector-id,
+.hljs-selector-class,
+.hljs-regexp,
+.hljs-deletion {
+	color: #c82829;
+}
+
+/* Tomorrow Orange */
+.hljs-number,
+.hljs-built_in,
+.hljs-builtin-name,
+.hljs-literal,
+.hljs-type,
+.hljs-params,
+.hljs-meta,
+.hljs-link {
+	color: #f5871f;
+}
+
+/* Tomorrow Yellow */
+.hljs-attribute {
+	color: #eab700;
+}
+
+/* Tomorrow Green */
+.hljs-string,
+.hljs-symbol,
+.hljs-bullet,
+.hljs-addition {
+	color: #718c00;
+}
+
+/* Tomorrow Blue */
+.hljs-title,
+.hljs-section {
+	color: #4271ae;
+}
+
+/* Tomorrow Purple */
+.hljs-keyword,
+.hljs-selector-tag {
+	color: #8959a8;
+}
+
+.hljs {
+	display: block;
+	overflow-x: auto;
+	color: #4d4d4c;
+	padding: 0.5em;
+}
+
+.hljs-emphasis {
+	font-style: italic;
+}
+
+.hljs-strong {
+	font-weight: bold;
+}
+</style>
+
+<style>
+/*
+ * Markdown PDF CSS
+ */
+
+ body {
+	font-family: -apple-system, BlinkMacSystemFont, "Segoe WPC", "Segoe UI", "Ubuntu", "Droid Sans", sans-serif, "Meiryo";
+	padding: 0 12px;
+}
+
+pre {
+	background-color: #f8f8f8;
+	border: 1px solid #cccccc;
+	border-radius: 3px;
+	overflow-x: auto;
+	white-space: pre-wrap;
+	overflow-wrap: break-word;
+}
+
+pre:not(.hljs) {
+	padding: 23px;
+	line-height: 19px;
+}
+
+blockquote {
+	background: rgba(127, 127, 127, 0.1);
+	border-color: rgba(0, 122, 204, 0.5);
+}
+
+.emoji {
+	height: 1.4em;
+}
+
+code {
+	font-size: 14px;
+	line-height: 19px;
+}
+
+/* for inline code */
+:not(pre):not(.hljs) > code {
+	color: #C9AE75; /* Change the old color so it seems less like an error */
+	font-size: inherit;
+}
+
+/* Page Break : use <div class="page"/> to insert page break
+-------------------------------------------------------- */
+.page {
+	page-break-after: always;
+}
+
+</style>
+
+<script src="https://unpkg.com/mermaid/dist/mermaid.min.js"></script>
+</head>
+<body>
+  <script>
+    mermaid.initialize({
+      startOnLoad: true,
+      theme: document.body.classList.contains('vscode-dark') || document.body.classList.contains('vscode-high-contrast')
+          ? 'dark'
+          : 'default'
+    });
+  </script>
+<p>Streamlit is a Python library for building interactive web applications. Below is a list of commonly used Streamlit commands, categorized for easy reference:</p>
+<hr>
+<h3 id="basic-setup"><strong>Basic Setup</strong></h3>
+<ul>
+<li><code>import streamlit as st</code>: Import the Streamlit library.</li>
+<li><code>st.set_page_config(page_title=&quot;Title&quot;, layout=&quot;wide&quot;)</code>: Configure the page (title, layout, etc.).</li>
+</ul>
+<hr>
+<h3 id="displaying-text"><strong>Displaying Text</strong></h3>
+<ul>
+<li><code>st.title(&quot;Title&quot;)</code>: Display a title.</li>
+<li><code>st.header(&quot;Header&quot;)</code>: Display a header.</li>
+<li><code>st.subheader(&quot;Subheader&quot;)</code>: Display a subheader.</li>
+<li><code>st.write(&quot;Text or variable&quot;)</code>: Write text or render other elements (Markdown, dataframes, etc.).</li>
+<li><code>st.markdown(&quot;**Markdown Text**&quot;)</code>: Render Markdown content.</li>
+<li><code>st.code(&quot;Code block&quot;, language=&quot;python&quot;)</code>: Display a code block.</li>
+<li><code>st.caption(&quot;Caption text&quot;)</code>: Add a small caption below content.</li>
+</ul>
+<hr>
+<h3 id="displaying-data"><strong>Displaying Data</strong></h3>
+<ul>
+<li><code>st.dataframe(df)</code>: Display an interactive dataframe.</li>
+<li><code>st.table(data)</code>: Display static tabular data.</li>
+<li><code>st.json(json_data)</code>: Render JSON data.</li>
+<li><code>st.metric(label, value, delta=None)</code>: Display a KPI-like metric.</li>
+</ul>
+<hr>
+<h3 id="user-inputs"><strong>User Inputs</strong></h3>
+<h4 id="text-inputs"><strong>Text Inputs</strong></h4>
+<ul>
+<li><code>st.text_input(&quot;Label&quot;, value=&quot;default text&quot;)</code>: Input a single line of text.</li>
+<li><code>st.text_area(&quot;Label&quot;, value=&quot;default text&quot;)</code>: Input multiple lines of text.</li>
+</ul>
+<h4 id="numeric-inputs"><strong>Numeric Inputs</strong></h4>
+<ul>
+<li><code>st.number_input(&quot;Label&quot;, value=0, step=1)</code>: Input a number.</li>
+</ul>
+<h4 id="selections"><strong>Selections</strong></h4>
+<ul>
+<li><code>st.selectbox(&quot;Label&quot;, options)</code>: Dropdown menu.</li>
+<li><code>st.multiselect(&quot;Label&quot;, options)</code>: Select multiple options.</li>
+<li><code>st.radio(&quot;Label&quot;, options)</code>: Radio buttons.</li>
+</ul>
+<h4 id="sliders"><strong>Sliders</strong></h4>
+<ul>
+<li><code>st.slider(&quot;Label&quot;, min_value, max_value, value)</code>: Create a slider.</li>
+<li><code>st.select_slider(&quot;Label&quot;, options)</code>: Slider with specific options.</li>
+</ul>
+<h4 id="buttons"><strong>Buttons</strong></h4>
+<ul>
+<li><code>st.button(&quot;Label&quot;)</code>: Add a button.</li>
+<li><code>st.download_button(&quot;Label&quot;, data, file_name)</code>: Create a file download button.</li>
+</ul>
+<h4 id="datetime-inputs"><strong>Date/Time Inputs</strong></h4>
+<ul>
+<li><code>st.date_input(&quot;Label&quot;)</code>: Pick a date.</li>
+<li><code>st.time_input(&quot;Label&quot;)</code>: Pick a time.</li>
+</ul>
+<h4 id="checkboxes"><strong>Checkboxes</strong></h4>
+<ul>
+<li><code>st.checkbox(&quot;Label&quot;)</code>: Add a checkbox.</li>
+</ul>
+<h4 id="file-uploader"><strong>File Uploader</strong></h4>
+<ul>
+<li><code>st.file_uploader(&quot;Label&quot;, type=[&quot;csv&quot;, &quot;txt&quot;])</code>: Upload a file.</li>
+</ul>
+<hr>
+<h3 id="media"><strong>Media</strong></h3>
+<ul>
+<li><code>st.image(image, caption=None, use_column_width=False)</code>: Display an image.</li>
+<li><code>st.video(video_path)</code>: Display a video.</li>
+<li><code>st.audio(audio_path)</code>: Play an audio file.</li>
+</ul>
+<hr>
+<h3 id="charts-and-visualizations"><strong>Charts and Visualizations</strong></h3>
+<ul>
+<li><code>st.line_chart(data)</code>: Create a line chart.</li>
+<li><code>st.bar_chart(data)</code>: Create a bar chart.</li>
+<li><code>st.area_chart(data)</code>: Create an area chart.</li>
+<li><code>st.pyplot(fig)</code>: Display Matplotlib figures.</li>
+<li><code>st.plotly_chart(fig)</code>: Display Plotly figures.</li>
+<li><code>st.altair_chart(chart)</code>: Display Altair charts.</li>
+</ul>
+<hr>
+<h3 id="layouts-and-containers"><strong>Layouts and Containers</strong></h3>
+<ul>
+<li><code>st.sidebar</code>: Access sidebar elements, e.g., <code>st.sidebar.button(&quot;Button in Sidebar&quot;)</code>.</li>
+<li><code>st.container()</code>: Create a container for grouping elements.</li>
+<li><code>st.columns(n)</code>: Split layout into columns, e.g., <code>col1, col2 = st.columns(2)</code>.</li>
+<li><code>st.expander(&quot;Label&quot;)</code>: Add an expandable section.</li>
+</ul>
+<hr>
+<h3 id="control-flow"><strong>Control Flow</strong></h3>
+<ul>
+<li><code>st.stop()</code>: Stop the execution of the app.</li>
+<li><code>st.experimental_rerun()</code>: Rerun the app.</li>
+</ul>
+<hr>
+<h3 id="session-state"><strong>Session State</strong></h3>
+<ul>
+<li><code>st.session_state</code>: Access and store state variables.<pre class="hljs"><code><div><span class="hljs-keyword">if</span> <span class="hljs-string">"key"</span> <span class="hljs-keyword">not</span> <span class="hljs-keyword">in</span> st.session_state:
+    st.session_state[<span class="hljs-string">"key"</span>] = <span class="hljs-number">0</span>
+st.session_state[<span class="hljs-string">"key"</span>] += <span class="hljs-number">1</span>
+st.write(st.session_state[<span class="hljs-string">"key"</span>])
+</div></code></pre>
+</li>
+</ul>
+<hr>
+<h3 id="other"><strong>Other</strong></h3>
+<ul>
+<li><code>st.progress(value)</code>: Add a progress bar.</li>
+<li><code>st.spinner(&quot;Text&quot;)</code>: Show a spinner while processing.</li>
+<li><code>st.toast(&quot;Message&quot;)</code>: Show a temporary notification (experimental).</li>
+<li><code>st.form(&quot;Form Name&quot;)</code>: Create a form for multiple inputs.</li>
+</ul>
+<hr>
+<p>Let me know if you'd like examples for specific commands!</p>
+
+</body>
+</html>
